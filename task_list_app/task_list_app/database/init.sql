@@ -1,7 +1,6 @@
 -- init.sql
 
 CREATE SCHEMA IF NOT EXISTS task_data;
-\c tasks
 
 CREATE TABLE IF NOT EXISTS task_data.task_table (
     id SERIAL PRIMARY KEY,

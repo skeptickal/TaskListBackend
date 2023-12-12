@@ -12,9 +12,12 @@ import jakarta.persistence.Table;
 @Table(name = "my tasks")
 public class MyTask {
     
-    @Column(name = "task name")
+    @Column(name = "id")
     @Id
     private Long id;
+
+    @Column(name = "name")
+    private String name;
 
 public Long getId() {
     return this.id;
@@ -22,6 +25,14 @@ public Long getId() {
 
 public void setId(Long id) {
     this.id = id;  
+}
+
+public String getName() {
+    return this.name;
+}
+
+public void setName(String name) {
+    this.name = name;  
 }
 
 @Override
