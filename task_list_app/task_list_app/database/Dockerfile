@@ -1,7 +1,7 @@
 FROM postgres:latest
 
 # Set the environment variables
-ENV POSTGRES_DB tasks
+ENV POSTGRES_DB task_data
 ENV POSTGRES_USER task_user
 ENV POSTGRES_PASSWORD task_pass
 
