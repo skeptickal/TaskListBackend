@@ -4,16 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 
 
 @Entity
-@Table(name = "my tasks")
+@Table(name = "mytasks")
 public class MyTask {
-    
-    @Column(name = "id")
+   
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
