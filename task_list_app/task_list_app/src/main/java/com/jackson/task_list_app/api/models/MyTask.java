@@ -1,7 +1,5 @@
 package com.jackson.task_list_app.api.models;
 
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,12 +7,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
-
 @Entity
 @Table(name = "tasks_table")
 public class MyTask {
-   
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -23,34 +19,34 @@ public class MyTask {
     @Column(name = "TASKNAME")
     private String name;
 
-public Long getId() {
-    return this.id;
-}
+    public Long getId() {
+        return this.id;
+    }
 
-public void setId(Long id) {
-    this.id = id;  
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public String getName() {
-    return this.name;
-}
+    public String getName() {
+        return this.name;
+    }
 
-public void setName(String name) {
-    this.name = name;  
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-@Override
-public String toString() {
-    return "id='" + getId() + "'";
-}
+    @Override
+    public String toString() {
+        return "id='" + getId() + "'";
+    }
 
-public MyTask() {
-    //not implemented
-}
+    public MyTask() {
+        // not implemented
+    }
 
-public MyTask(Long id, String name) {
-    this.id = id;
-    this.name = name;
-}
+    public MyTask(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 }
