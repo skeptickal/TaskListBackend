@@ -15,6 +15,8 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     public List<MyTask> getTask() {
-        return taskRepository.findAll();
+        List<MyTask> tasks = taskRepository.findAll();
+        System.out.println(tasks.size());
+        return tasks;
     }
 }
