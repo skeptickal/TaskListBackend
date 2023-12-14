@@ -10,3 +10,7 @@ ENV PGDATA /var/lib/postgresql/data
 
 # Copy the SQL scripts to the container
 COPY init.sql /docker-entrypoint-initdb.d/
+
+VOLUME /var/lib/postgresql/data
+
+EXPOSE 5432
