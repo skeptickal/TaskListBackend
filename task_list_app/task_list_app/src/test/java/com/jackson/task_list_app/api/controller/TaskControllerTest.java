@@ -54,7 +54,7 @@ public class TaskControllerTest {
        when(mockTaskService.getTask()).thenReturn(myTasks);
 
        MvcResult response = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
-       
+
        verify(mockTaskService, times(1)).getTask();
        assertEquals(new ObjectMapper().writeValueAsString(myTasks), response.getResponse().getContentAsString());
     }
@@ -63,6 +63,7 @@ public class TaskControllerTest {
     void testCreateMyTask() throws Exception {
        List<MyTask> myTasks = new ArrayList<>();
        myTasks.add(new MyTask(1L, "do the dishes"));
+       
        String requestJson = new ObjectMapper().writeValueAsString(myTasks.get(0)); 
        RequestBuilder request = MockMvcRequestBuilders
        .post("/tasks")
