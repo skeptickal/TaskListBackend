@@ -7,6 +7,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,29 @@ public class TaskServiceTest {
         when(mockTaskRepository.findById(anyLong())).thenThrow(RuntimeException.class);
 
         assertThrows(RuntimeException.class, () -> taskService.updateMyTask(new MyTask(3L, "throw an exception")));
+    }
+
+    @Test
+    void testGetTask() {
+        List<MyTask> mockTasks = new ArrayList<>();
+        mockTasks.add(new MyTask(1L, "do the dishes"));
+        mockTasks.add(new MyTask(2L, "wash the dishes"));
+
+        when(mockTaskRepository.findAll()).thenReturn(mockTasks);
+
+        List<MyTask> actual = taskService.getTask();
+        verify(mockTaskRepository).findAll();
+
+        assertEquals(mockTasks, actual);
+    }
+
+    @Test
+    void testCreateMyTask() {
+
+        when(mockTaskRepository.save(any(MyTask.class))).thenReturn(new MyTask(2L, "wash the dishes"));
+        MyTask actual = taskService.createMyTask(new MyTask(2L, "wash the dishes"));
+
+        assertEquals("wash the dishes", actual.getName());
     }
 
 
