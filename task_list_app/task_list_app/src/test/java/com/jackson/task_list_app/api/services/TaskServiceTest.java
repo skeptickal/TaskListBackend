@@ -32,7 +32,7 @@ public class TaskServiceTest {
     @Test
     void testUpdateMyTask() {
         when(mockTaskRepository.findById(anyLong())).thenReturn(Optional.of(new MyTask(1L, "do the dishes")));
-        when(mockTaskRepository.save(any(MyTask.class))).thenReturn(new MyTask(2L, "wash the dishes"));
+        when(mockTaskRepository.save(any(MyTask.class))).thenReturn(new MyTask(1L, "wash the dishes"));
 
         MyTask actual = taskService.updateMyTask(new MyTask(1L, "wash the dishes"));
         verify(mockTaskRepository).findById(1L);
