@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TaskListAppApplication",
+            "request": "launch",
+            "mainClass": "com.jackson.task_list_app.TaskListAppApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
