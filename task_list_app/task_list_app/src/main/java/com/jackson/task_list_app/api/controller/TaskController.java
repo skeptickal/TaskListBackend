@@ -36,14 +36,14 @@ public class TaskController {
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
-    @PutMapping("/tasks/{id}") // Adjust the path variable according to your requirements
+    @PutMapping("/tasks/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
         Task existingTask = taskService.getTaskById(id);
 
         if (existingTask != null) {
             updatedTask.setId(id);
             Task task = taskService.updateTask(updatedTask);
-            return new ResponseEntity<>(task, HttpStatus.OK);
+            return new ResponseEntity<>(task, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
