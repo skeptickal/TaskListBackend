@@ -3,7 +3,7 @@ package com.jackson.task_list_app.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.jackson.task_list_app.api.models.MyTask;
+import com.jackson.task_list_app.api.models.Task;
 import com.jackson.task_list_app.api.repository.TaskRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +15,23 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<MyTask> getTask() {
+    public List<Task> getTask() {
         return taskRepository.findAll(); 
     }
 
-    public MyTask createMyTask(MyTask newMyTask) {
-        return taskRepository.save(newMyTask);
+    public Task createTask(Task newTask) {
+        return taskRepository.save(newTask);
     }
 
-    public MyTask updateMyTask(MyTask updatedTask) {
+    public Task updateTask(Task updatedTask) {
         // Assuming that the 'id' property of 'updatedTask' is not null
         if (updatedTask.getId() != null) {
             // Check if the task with the given ID exists
-            Optional<MyTask> optionalExistingTask = taskRepository.findById(updatedTask.getId());
+            Optional<Task> optionalExistingTask = taskRepository.findById(updatedTask.getId());
             
             if (optionalExistingTask.isPresent()) {
                 // Update the existing task with the properties of the updated task
-                MyTask existingTask = optionalExistingTask.get();
+                Task existingTask = optionalExistingTask.get();
                 existingTask.setName(updatedTask.getName());
 
                 // Save the updated task
@@ -41,8 +41,8 @@ public class TaskService {
         return null; 
     }
 
-    public MyTask getTaskById(Long id) {
-        Optional<MyTask> optionalTask = taskRepository.findById(id);
+    public Task getTaskById(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
         return optionalTask.orElse(null);
     }
 }

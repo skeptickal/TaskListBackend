@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jackson.task_list_app.api.models.MyTask;
+import com.jackson.task_list_app.api.models.Task;
 import com.jackson.task_list_app.api.services.TaskService;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,8 +46,8 @@ public class TaskControllerTest {
 
     @Test
     void testGetTasks() throws Exception {
-       List<MyTask> myTasks = new ArrayList<>();
-       myTasks.add(new MyTask(1L, "do the dishes")); 
+       List<Task> myTasks = new ArrayList<>();
+       myTasks.add(new Task(1L, "do the dishes")); 
 
        RequestBuilder request = MockMvcRequestBuilders.get("/tasks").accept(MediaType.APPLICATION_JSON);
 
@@ -60,44 +60,44 @@ public class TaskControllerTest {
     }
 
     @Test
-    void testCreateMyTask() throws Exception {
-       List<MyTask> myTasks = new ArrayList<>();
-       myTasks.add(new MyTask(1L, "do the dishes"));
+    void testCreateTask() throws Exception {
+       List<Task> tasks = new ArrayList<>();
+       tasks.add(new Task(1L, "do the dishes"));
        
-       String requestJson = new ObjectMapper().writeValueAsString(myTasks.get(0)); 
+       String requestJson = new ObjectMapper().writeValueAsString(tasks.get(0)); 
        RequestBuilder request = MockMvcRequestBuilders
        .post("/tasks")
        .contentType(MediaType.APPLICATION_JSON)
        .content(requestJson)
        .accept(MediaType.APPLICATION_JSON);
 
-       when(mockTaskService.createMyTask(any(MyTask.class))).thenReturn(myTasks.get(0));
+       when(mockTaskService.createTask(any(Task.class))).thenReturn(tasks.get(0));
 
        MvcResult response = mockMvc.perform(request).andExpect(status().isCreated()).andReturn();
 
-       verify(mockTaskService, times(1)).createMyTask(any(MyTask.class));
+       verify(mockTaskService, times(1)).createTask(any(Task.class));
        assertEquals(requestJson, response.getResponse().getContentAsString());
     }
 
     @Test
-    void testUpdateMyTask() throws Exception {
-       List<MyTask> myTasks = new ArrayList<>();
-       myTasks.add(new MyTask(1L, "do the dishes"));
+    void testUpdateTask() throws Exception {
+       List<Task> tasks = new ArrayList<>();
+       tasks.add(new Task(1L, "do the dishes"));
 
-       String requestJson = new ObjectMapper().writeValueAsString(myTasks.get(0)); 
+       String requestJson = new ObjectMapper().writeValueAsString(tasks.get(0)); 
 
        RequestBuilder request = MockMvcRequestBuilders
-       .put("/tasks/{id}", myTasks.get(0).getId())
+       .put("/tasks/{id}", tasks.get(0).getId())
        .contentType(MediaType.APPLICATION_JSON)
        .content(requestJson)
        .accept(MediaType.APPLICATION_JSON);
 
-       when(mockTaskService.updateMyTask(any(MyTask.class))).thenReturn(myTasks.get(0));
-       when(mockTaskService.getTaskById(anyLong())).thenReturn(myTasks.get(0));
+       when(mockTaskService.updateTask(any(Task.class))).thenReturn(tasks.get(0));
+       when(mockTaskService.getTaskById(anyLong())).thenReturn(tasks.get(0));
 
        MvcResult response = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
 
-       verify(mockTaskService, times(1)).updateMyTask(any(MyTask.class));
+       verify(mockTaskService, times(1)).updateTask(any(Task.class));
        assertEquals(requestJson, response.getResponse().getContentAsString());
     }
 }

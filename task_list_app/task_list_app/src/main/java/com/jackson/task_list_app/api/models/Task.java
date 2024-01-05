@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tasks_table")
-public class MyTask {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +40,11 @@ public class MyTask {
         return "id='" + getId() + "'";
     }
 
-    public MyTask() {
+    public Task() {
         // not implemented
     }
 
-    public MyTask(Long id, String name) {
+    public Task(Long id, String name) {
         this.id = id;
         this.name = name;
     }
