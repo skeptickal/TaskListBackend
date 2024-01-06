@@ -2,6 +2,17 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'jacoco'
+}
+
+jacoco {
+	toolVersion = "0.8.11"
+}
+
+test {
+	jacoco {
+        enabled = true
+    }
 }
 
 group = 'com.jackson'
@@ -23,11 +34,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation ('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'junit'
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: 'org.mockito', module: 'mockito-core'
+	}
+	testImplementation 'org.mockito:mockito-inline:4.6.1'
 	implementation 'org.postgresql:postgresql:42.7.1'
 	implementation 'org.hibernate:hibernate-core:6.3.1.Final'
     implementation 'javax.persistence:javax.persistence-api:2.2'
 	implementation 'org.springframework.session:spring-session-jdbc'
+
 }
 
 tasks.named('test') {
