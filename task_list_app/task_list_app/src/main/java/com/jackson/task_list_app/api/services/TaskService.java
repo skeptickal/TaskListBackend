@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jackson.task_list_app.api.models.Task;
+import com.jackson.task_list_app.api.models.TaskStatus;
 import com.jackson.task_list_app.api.repository.TaskRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class TaskService {
                 Task existingTask = optionalExistingTask.get();
                 existingTask.setName(updatedTask.getName());
 
+                if (updatedTask.getStatus() != null) {
+                    existingTask.setStatus(updatedTask.getStatus());
+                }
+
                 // Save the updated task
                 return taskRepository.save(existingTask);
             }
@@ -44,5 +49,9 @@ public class TaskService {
     public Task getTaskById(Long id) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         return optionalTask.orElse(null);
+    }
+
+    public List<Task> getTasksByStatus(TaskStatus status) {
+        return taskRepository.findByStatus(status);
     }
 }

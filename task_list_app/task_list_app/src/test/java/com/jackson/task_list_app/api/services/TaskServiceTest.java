@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jackson.task_list_app.api.models.Task;
+import com.jackson.task_list_app.api.models.TaskStatus;
 import com.jackson.task_list_app.api.repository.TaskRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +32,10 @@ public class TaskServiceTest {
 
     @Test
     void testUpdateTask() {
-        when(mockTaskRepository.findById(anyLong())).thenReturn(Optional.of(new Task(1L, "do the dishes")));
-        when(mockTaskRepository.save(any(Task.class))).thenReturn(new Task(1L, "wash the dishes"));
+        when(mockTaskRepository.findById(anyLong())).thenReturn(Optional.of(new Task(1L, "do the dishes", TaskStatus.TODO)));
+        when(mockTaskRepository.save(any(Task.class))).thenReturn(new Task(1L, "wash the dishes", TaskStatus.TODO));
 
-        Task actual = taskService.updateTask(new Task(1L, "wash the dishes"));
+        Task actual = taskService.updateTask(new Task(1L, "wash the dishes", TaskStatus.TODO));
         verify(mockTaskRepository).findById(1L);
 
         assertEquals("wash the dishes", actual.getName());
@@ -44,7 +45,7 @@ public class TaskServiceTest {
     void testUpdateTaskWhenAbsent() {
         when(mockTaskRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
 
-        Task actual = taskService.updateTask(new Task(1L, "wash the dishes"));
+        Task actual = taskService.updateTask(new Task(1L, "wash the dishes", TaskStatus.TODO));
 
         assertEquals(null, actual);
     }
@@ -54,14 +55,14 @@ public class TaskServiceTest {
 
         when(mockTaskRepository.findById(anyLong())).thenThrow(RuntimeException.class);
 
-        assertThrows(RuntimeException.class, () -> taskService.updateTask(new Task(3L, "throw an exception")));
+        assertThrows(RuntimeException.class, () -> taskService.updateTask(new Task(3L, "throw an exception", TaskStatus.TODO)));
     }
 
     @Test
     void testGetTask() {
         List<Task> mockTasks = new ArrayList<>();
-        mockTasks.add(new Task(1L, "do the dishes"));
-        mockTasks.add(new Task(2L, "wash the dishes"));
+        mockTasks.add(new Task(1L, "do the dishes", TaskStatus.TODO));
+        mockTasks.add(new Task(2L, "wash the dishes", TaskStatus.TODO));
 
         when(mockTaskRepository.findAll()).thenReturn(mockTasks);
 
@@ -74,8 +75,8 @@ public class TaskServiceTest {
     @Test
     void testCreateTask() {
 
-        when(mockTaskRepository.save(any(Task.class))).thenReturn(new Task(2L, "wash the dishes"));
-        Task actual = taskService.createTask(new Task(2L, "wash the dishes"));
+        when(mockTaskRepository.save(any(Task.class))).thenReturn(new Task(2L, "wash the dishes", TaskStatus.TODO));
+        Task actual = taskService.createTask(new Task(2L, "wash the dishes", TaskStatus.TODO));
 
         assertEquals("wash the dishes", actual.getName());
     }
