@@ -61,6 +61,21 @@ public class TaskControllerTest {
     }
 
     @Test
+    void testGetTasksWithStatus() throws Exception {
+       List<Task> myTasks = new ArrayList<>();
+       myTasks.add(new Task(1L, "do the dishes", TaskStatus.TODO)); 
+
+       RequestBuilder request = MockMvcRequestBuilders.get("/tasks").param("status", "TODO").accept(MediaType.APPLICATION_JSON);
+
+       when(mockTaskService.getTasksByStatus(TaskStatus.TODO)).thenReturn(myTasks);
+
+       MvcResult response = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
+
+       verify(mockTaskService, times(1)).getTasksByStatus(TaskStatus.TODO);
+       assertEquals(new ObjectMapper().writeValueAsString(myTasks), response.getResponse().getContentAsString());
+    }
+
+    @Test
     void testCreateTask() throws Exception {
        List<Task> tasks = new ArrayList<>();
        tasks.add(new Task(1L, "do the dishes", TaskStatus.TODO));
