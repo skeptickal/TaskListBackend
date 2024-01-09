@@ -1,6 +1,5 @@
 package com.jackson.task_list_app.api.controller;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +25,27 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    // GetMappings
+    // Get Mappings
     @GetMapping("/tasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<Task> getTasks(@RequestParam(required = false) String status) {
+    public ResponseEntity<List<Task>> getTasks(@RequestParam(required = false) String status) {
         if (status != null) {
             try {
                 TaskStatus taskStatus = TaskStatus.valueOf(status.toUpperCase());
-                return taskService.getTasksByStatus(taskStatus);
+                return new ResponseEntity<>(taskService.getTasksByStatus(taskStatus), HttpStatus.OK);
             } catch (IllegalArgumentException e) {
-                // Handle invalid status value
-                return Collections.emptyList();
+               return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } else {
-            return taskService.getTask();
+            return new ResponseEntity<>(taskService.getTask(), HttpStatus.OK);
         }
     }
 
     // Post Mappings
     @PostMapping("/tasks")
-    public ResponseEntity<Task> createTask(@RequestBody Task newTask) {
-        Task createdTask = taskService.createTask(newTask);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Task createTask(@RequestBody Task newTask) {
+        return taskService.createTask(newTask);
     }
 
     // Put Mappings
@@ -74,14 +72,14 @@ public class TaskController {
     }
 
     // Delete Mappings
-    @DeleteMapping("/tasks/{id}/delete")
+    @DeleteMapping("/tasks/{id}")
     public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
         Task existingTask = taskService.getTaskById(id);
 
         if (existingTask != null) {
             existingTask.setStatus(TaskStatus.DELETED);
             Task updatedTask = taskService.updateTask(existingTask);
-            return new ResponseEntity<>(updatedTask, HttpStatus.CREATED);
+            return new ResponseEntity<>(updatedTask, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
