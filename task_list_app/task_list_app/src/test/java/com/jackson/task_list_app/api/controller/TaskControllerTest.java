@@ -109,7 +109,7 @@ public class TaskControllerTest {
        
        String requestJson = new ObjectMapper().writeValueAsString(tasks.get(0)); 
        RequestBuilder request = MockMvcRequestBuilders
-       .delete("/tasks/{id}/delete", tasks.get(0).getId())
+       .delete("/tasks/{id}", tasks.get(0).getId())
        .contentType(MediaType.APPLICATION_JSON)
        .content(requestJson)
        .accept(MediaType.APPLICATION_JSON);
@@ -117,7 +117,7 @@ public class TaskControllerTest {
        when(mockTaskService.getTaskById(anyLong())).thenReturn(tasks.get(0));
        when(mockTaskService.updateTask(any(Task.class))).thenReturn(tasks.get(0));
 
-       MvcResult response = mockMvc.perform(request).andExpect(status().isCreated()).andReturn();
+       MvcResult response = mockMvc.perform(request).andExpect(status().isAccepted()).andReturn();
 
        verify(mockTaskService, times(1)).getTaskById(anyLong());
        verify(mockTaskService, times(1)).updateTask(any(Task.class));
