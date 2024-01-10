@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Task List App API
+  version: 1.0.0
+  description: API for managing tasks in a task list application
+  contact:
+    name: Jackson Geer
+    email: jacksongeer@gmail.com
+    url: https://github.com/skeptickal/TaskListBackend
+servers:
+  - url: "http://localhost:8080"
+paths:
+  /tasks:
+    get:
+      tags:
+        - Task List App Functions
+      summary: Get all tasks
+      parameters:
+        - name: status
+          in: query
+          description: Filter tasks by status
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+    post:
+      tags:
+          - Task List App Functions
+      summary: Create a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+  /tasks/{id}:
+    put:
+      tags:
+          - Task List App Functions
+      summary: Update a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: newStatus
+          in: query
+          description: New status for the task
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Task not found
+    delete:
+      tags:
+        - Task List App Functions
+      summary: Delete a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '202':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Task not found
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: An auto generated task number for record keeping
+        name:
+          type: string
+          description: Description of the task you wish to complete, i.e "walk the dogs"
+        status:
+          type: string
+          format: enum
+          description: Represents the status of a task in it's cycle. `TODO` means the task is still in progress, `COMPLETED` means it is a completed task and goes to a separate completed task bin,`RECYCLED` are tasks that you just throw away, not intending to complete for now but can be recovered later, and finally `DELETED` is a task you want fully thrown away.
+          enum:
+            - TODO
+            - COMPLETED
+            - RECYCLED
+            - DELETED
+          example: TODO
+tags:
+  - name: Task List App Functions
+    description: API endpoints to support the Task List App
