@@ -14,7 +14,7 @@ paths:
     get:
       tags:
         - Task List App Functions
-      summary: Get all tasks
+      summary: Get all tasks or all tasks matching a given status
       parameters:
         - name: status
           in: query
@@ -63,11 +63,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: newStatus
-          in: query
-          description: New status for the task
-          schema:
-            type: string
       requestBody:
         required: true
         content:

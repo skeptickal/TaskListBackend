@@ -54,19 +54,11 @@ public class TaskController {
     @PutMapping("/tasks/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task updatedTask,
-            @RequestParam(required = false) TaskStatus newStatus) {
-        Task existingTask = taskService.getTaskById(id);
-
-        if (existingTask != null) {
-            updatedTask.setId(id);
-            Task task = taskService.updateTask(updatedTask);
-
-            if (newStatus != null) {
-                existingTask.setStatus(newStatus);
-                task = taskService.updateTask(existingTask);
-            }
-
+            @RequestBody Task updatedTask) {
+        updatedTask.setId(id);
+        Task task = taskService.updateTask(updatedTask);
+    
+        if (task != null) {
             return new ResponseEntity<>(task, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
