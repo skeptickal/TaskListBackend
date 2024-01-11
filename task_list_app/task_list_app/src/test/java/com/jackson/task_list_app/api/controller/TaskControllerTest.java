@@ -109,7 +109,6 @@ public class TaskControllerTest {
        .accept(MediaType.APPLICATION_JSON);
 
        when(mockTaskService.updateTask(any(Task.class))).thenReturn(tasks.get(0));
-       when(mockTaskService.getTaskById(anyLong())).thenReturn(tasks.get(0));
 
        MvcResult response = mockMvc.perform(request).andExpect(status().isCreated()).andReturn();
 
