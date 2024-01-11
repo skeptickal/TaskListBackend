@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jackson.task_list_app.api.models.Task;
+import com.jackson.task_list_app.api.models.TaskStatus;
 import com.jackson.task_list_app.api.services.TaskService;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +48,7 @@ public class TaskControllerTest {
     @Test
     void testGetTasks() throws Exception {
        List<Task> myTasks = new ArrayList<>();
-       myTasks.add(new Task(1L, "do the dishes")); 
+       myTasks.add(new Task(1L, "do the dishes", TaskStatus.TODO)); 
 
        RequestBuilder request = MockMvcRequestBuilders.get("/tasks").accept(MediaType.APPLICATION_JSON);
 
@@ -60,9 +61,24 @@ public class TaskControllerTest {
     }
 
     @Test
+    void testGetTasksWithStatus() throws Exception {
+       List<Task> myTasks = new ArrayList<>();
+       myTasks.add(new Task(1L, "do the dishes", TaskStatus.TODO)); 
+
+       RequestBuilder request = MockMvcRequestBuilders.get("/tasks").param("status", "TODO").accept(MediaType.APPLICATION_JSON);
+
+       when(mockTaskService.getTasksByStatus(TaskStatus.TODO)).thenReturn(myTasks);
+
+       MvcResult response = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
+
+       verify(mockTaskService, times(1)).getTasksByStatus(TaskStatus.TODO);
+       assertEquals(new ObjectMapper().writeValueAsString(myTasks), response.getResponse().getContentAsString());
+    }
+
+    @Test
     void testCreateTask() throws Exception {
        List<Task> tasks = new ArrayList<>();
-       tasks.add(new Task(1L, "do the dishes"));
+       tasks.add(new Task(1L, "do the dishes", TaskStatus.TODO));
        
        String requestJson = new ObjectMapper().writeValueAsString(tasks.get(0)); 
        RequestBuilder request = MockMvcRequestBuilders
@@ -82,7 +98,7 @@ public class TaskControllerTest {
     @Test
     void testUpdateTask() throws Exception {
        List<Task> tasks = new ArrayList<>();
-       tasks.add(new Task(1L, "do the dishes"));
+       tasks.add(new Task(1L, "do the dishes", TaskStatus.TODO));
 
        String requestJson = new ObjectMapper().writeValueAsString(tasks.get(0)); 
 
@@ -93,10 +109,31 @@ public class TaskControllerTest {
        .accept(MediaType.APPLICATION_JSON);
 
        when(mockTaskService.updateTask(any(Task.class))).thenReturn(tasks.get(0));
+
+       MvcResult response = mockMvc.perform(request).andExpect(status().isCreated()).andReturn();
+
+       verify(mockTaskService, times(1)).updateTask(any(Task.class));
+       assertEquals(requestJson, response.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testDeleteTask() throws Exception {
+       List<Task> tasks = new ArrayList<>();
+       tasks.add(new Task(1L, "do the dishes", TaskStatus.DELETED));
+       
+       String requestJson = new ObjectMapper().writeValueAsString(tasks.get(0)); 
+       RequestBuilder request = MockMvcRequestBuilders
+       .delete("/tasks/{id}", tasks.get(0).getId())
+       .contentType(MediaType.APPLICATION_JSON)
+       .content(requestJson)
+       .accept(MediaType.APPLICATION_JSON);
+
        when(mockTaskService.getTaskById(anyLong())).thenReturn(tasks.get(0));
+       when(mockTaskService.updateTask(any(Task.class))).thenReturn(tasks.get(0));
 
-       MvcResult response = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
+       MvcResult response = mockMvc.perform(request).andExpect(status().isAccepted()).andReturn();
 
+       verify(mockTaskService, times(1)).getTaskById(anyLong());
        verify(mockTaskService, times(1)).updateTask(any(Task.class));
        assertEquals(requestJson, response.getResponse().getContentAsString());
     }
