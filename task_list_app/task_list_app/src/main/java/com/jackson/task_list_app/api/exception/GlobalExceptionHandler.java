@@ -12,13 +12,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        return new ResponseEntity<>("Bad Request: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Bad Request: No such status", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalAccessException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleIllegalAccessException(IllegalAccessException e) {
-        return new ResponseEntity<>("Not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Not found: Task not found with this ID", HttpStatus.NOT_FOUND);
     }
 
 }

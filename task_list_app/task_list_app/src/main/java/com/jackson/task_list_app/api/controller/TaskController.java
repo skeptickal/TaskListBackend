@@ -20,7 +20,6 @@ import com.jackson.task_list_app.api.models.Task;
 import com.jackson.task_list_app.api.models.TaskStatus;
 import com.jackson.task_list_app.api.services.TaskService;
 
-
 @RestController
 @CrossOrigin
 public class TaskController {
@@ -37,7 +36,7 @@ public class TaskController {
                 TaskStatus taskStatus = TaskStatus.valueOf(status.toUpperCase());
                 return new ResponseEntity<>(taskService.getTasksByStatus(taskStatus), HttpStatus.OK);
             } catch (IllegalArgumentException e) {
-               return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                throw new IllegalArgumentException();
             }
         } else {
             return new ResponseEntity<>(taskService.getTask(), HttpStatus.OK);
@@ -48,27 +47,31 @@ public class TaskController {
     @PostMapping("/tasks")
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTask(@RequestBody Task newTask) {
-        return taskService.createTask(newTask);
+        try {
+            return taskService.createTask(newTask);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
+        }
     }
 
     // Put Mappings
     @PutMapping("/tasks/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task updatedTask) {
+            @RequestBody Task updatedTask) throws Exception {
         updatedTask.setId(id);
         Task task = taskService.updateTask(updatedTask);
-    
+
         if (task != null) {
             return new ResponseEntity<>(task, HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalAccessException();
         }
     }
 
     // Delete Mappings
     @DeleteMapping("/tasks/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Task> deleteTask(@PathVariable Long id) throws Exception {
         Task existingTask = taskService.getTaskById(id);
 
         if (existingTask != null) {
@@ -76,7 +79,7 @@ public class TaskController {
             Task updatedTask = taskService.updateTask(existingTask);
             return new ResponseEntity<>(updatedTask, HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalAccessException();
         }
     }
 
