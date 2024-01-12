@@ -126,6 +126,31 @@
 			"response": []
 		},
 		{
+			"name": "Test Illegal Argument Exception",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tasks?status=recycled",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "recycled"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add a Task",
 			"request": {
 				"method": "POST",
@@ -133,6 +158,34 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"name\": \"Walk the dogs\",\r\n    \"status\": \"todo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Illegal Argument Exception",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Walk the dogs\",\r\n    \"status\": \"periwinkle\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -293,6 +346,64 @@
 					"path": [
 						"tasks",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Illegal Access Exception",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"This shouldn't exist\",\r\n    \"status\": \"todo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Illegal Access Exception for Delete",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"This shouldn't exist\",\r\n    \"status\": \"todo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks/1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1000"
 					]
 				}
 			},
