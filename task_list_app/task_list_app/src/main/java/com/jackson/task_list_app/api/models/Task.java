@@ -11,8 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tasks_table")
-public class Task {
-
+public class Task {    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

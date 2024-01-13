@@ -21,12 +21,15 @@ public class TaskService {
     }
 
     public Task createTask(Task newTask) {
+        if (newTask != null) {
         return taskRepository.save(newTask);
+        }
+        return null;
     }
 
     public Task updateTask(Task updatedTask) {
+        if (updatedTask != null && updatedTask.getId() != null) {
         // Assuming that the 'id' property of 'updatedTask' is not null
-        if (updatedTask.getId() != null) {
             // Check if the task with the given ID exists
             Optional<Task> optionalExistingTask = taskRepository.findById(updatedTask.getId());
             
@@ -42,13 +45,16 @@ public class TaskService {
                 // Save the updated task
                 return taskRepository.save(existingTask);
             }
-        }
+    }
         return null; 
     }
 
     public Task getTaskById(Long id) {
+        if (id != null) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         return optionalTask.orElse(null);
+        }
+        return null;
     }
 
     public List<Task> getTasksByStatus(TaskStatus status) {
