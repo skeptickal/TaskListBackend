@@ -16,8 +16,8 @@
             "request": "launch",
             "mainClass": "com.jackson.task_list_app.TaskListAppApplication",
             "projectName": "task_list_app",
-            "args": "-Xlint:unchecked",
-            "vmArgs": "-Xlint:unchecked"
+            // "args": "-Xlint:unchecked",
+            // "vmArgs": "-Xlint:unchecked"
         }
     ]
 }
